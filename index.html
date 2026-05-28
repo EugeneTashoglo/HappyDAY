@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HappyDAY</title>
+
+  <style>
+    :root {
+      --onec-yellow: #FFD200;
+      --onec-yellow-dark: #e4bb00;
+      --attention: #DB242C;
+      --attention-soft: #fff0f1;
+      --text: #202124;
+      --muted: #6b7280;
+      --bg: #f4f5f7;
+      --panel: #ffffff;
+      --line: #dfe3ea;
+      --line-strong: #c7cdd8;
+      --shadow: 0 14px 35px rgba(32, 33, 36, 0.10);
+      --radius-xl: 24px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 0%, rgba(255, 210, 0, 0.25), transparent 28%),
+        linear-gradient(180deg, #fffbe8 0, #f4f5f7 330px),
+        var(--bg);
+    }
+
+    button, input, textarea { font: inherit; }
+    a { color: var(--attention); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .app {
+      width: min(1280px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 48px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      padding: 18px 22px;
+      border: 1px solid #d9b600;
+      border-radius: var(--radius-xl);
+      background: linear-gradient(180deg, #ffe069 0%, var(--onec-yellow) 100%);
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: #222;
+      color: var(--onec-yellow);
+      display: grid;
+      place-items: center;
+      font-size: 24px;
+      font-weight: 900;
+      box-shadow: inset 0 -6px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .brand h1 {
+      margin: 0 0 4px;
+      font-size: clamp(26px, 4vw, 42px);
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+
+    .brand p {
+      margin: 0;
+      color: #574a00;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 38px;
+      padding: 8px 13px;
+      border-radius: 999px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      background: rgba(255, 255, 255, 0.72);
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .pill.attention {
+      color: var(--attention);
+      border-color: #efbcc0;
+      background: #fff5f5;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .panel {
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      padding: 20px;
+    }
+
+    .panel + .panel { margin-top: 20px; }
+
+    .panel-title {
+      margin: 0 0 15px;
+      font-size: 22px;
+      letter-spacing: -0.02em;
+    }
+
+    .muted { color: var(--muted); }
+    .small { font-size: 13px; }
+
+    .field { margin-bottom: 13px; }
+
+    .field label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+      font-weight: 800;
+      color: #4b5563;
+    }
+
+    .field input,
+    .field textarea {
+      width: 100%;
+      border: 1px solid var(--line-strong);
+      border-radius: 14px;
+      background: #fff;
+      color: var(--text);
+      padding: 12px 13px;
+      outline: none;
+      transition: 0.16s border, 0.16s box-shadow;
+    }
+
+    .field textarea {
+      min-height: 84px;
+      resize: vertical;
+    }
+
+    .field input:focus,
+    .field textarea:focus {
+      border-color: var(--onec-yellow-dark);
+      box-shadow: 0 0 0 4px rgba(255, 210, 0, 0.22);
+    }
+
+    .hint {
+      margin-top: 8px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: #fff8d9;
+      border: 1px solid #f2dc79;
+      color: #745e00;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .message {
+      margin-top: 12px;
+      padding: 11px 12px;
+      border-radius: 14px;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .message.info { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+    .message.ok { background: #ecfdf3; border: 1px solid #b7ebc8; color: #116530; }
+    .message.error { background: var(--attention-soft); border: 1px solid #f3b8bd; color: var(--attention); }
+
+    .btn-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 14px;
+      min-height: 42px;
+      padding: 11px 15px;
+      cursor: pointer;
+      font-weight: 900;
+      transition: 0.14s transform, 0.14s box-shadow, 0.14s background;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+    .btn-primary {
+      background: var(--onec-yellow);
+      color: #1f2937;
+      border: 1px solid #d7b100;
+      box-shadow: 0 8px 18px rgba(255, 210, 0, 0.24);
+    }
+
+    .btn-primary:hover { background: var(--onec-yellow-dark); }
+
+    .btn-secondary {
+      background: #f3f4f6;
+      color: #111827;
+      border: 1px solid var(--line);
+    }
+
+    .btn-attention {
+      background: var(--attention);
+      color: #fff;
+      border: 1px solid #bd151d;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--attention);
+      padding-inline: 4px;
+      min-height: auto;
+      box-shadow: none;
+    }
+
+    .dashboard {
+      display: grid;
+      gap: 20px;
+    }
+
+    .hero {
+      background:
+        linear-gradient(135deg, rgba(255, 210, 0, 0.20), rgba(255, 255, 255, 0.92)),
+        #fff;
+      border-color: #ead36b;
+    }
+
+    .hero h2 {
+      margin: 0 0 8px;
+      font-size: 30px;
+      letter-spacing: -0.04em;
+    }
+
+    .hero p { margin: 0; color: #4b5563; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .stat {
+      border: 1px solid #eddb85;
+      border-radius: 18px;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .stat strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 25px;
+      letter-spacing: -0.03em;
+    }
+
+    .profile-card {
+      background: linear-gradient(180deg, #fffdf3 0%, #fff 100%);
+      border-color: #f0dd84;
+    }
+
+    .profile-name {
+      margin: 0 0 5px;
+      font-size: 26px;
+      letter-spacing: -0.03em;
+    }
+
+    .profile-date { margin: 0; color: var(--muted); }
+
+    .responsibility-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .responsibility-item {
+      padding: 12px 13px;
+      border: 1px solid #eddb85;
+      border-radius: 15px;
+      background: #fff8d9;
+      font-weight: 800;
+    }
+
+    .empty {
+      padding: 16px;
+      border: 1px dashed #cbd5e1;
+      border-radius: 16px;
+      background: #fafafa;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .birthday-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .birthday-card {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: #fff;
+      padding: 16px;
+      transition: 0.16s border, 0.16s transform;
+    }
+
+    .birthday-card:hover {
+      border-color: #e8cf59;
+      transform: translateY(-1px);
+    }
+
+    .birthday-head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .birthday-name {
+      margin: 0 0 6px;
+      font-size: 21px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+    }
+
+    .birthday-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 31px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid #ead36b;
+      background: #fff8d9;
+      color: #6b5200;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .tag.attention {
+      color: var(--attention);
+      border-color: #efbcc0;
+      background: #fff5f5;
+    }
+
+    details {
+      margin-top: 13px;
+      overflow: hidden;
+      border: 1px solid #edf0f5;
+      border-radius: 16px;
+      background: #fafafa;
+    }
+
+    summary {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      list-style: none;
+      padding: 12px 14px;
+      font-weight: 900;
+      user-select: none;
+    }
+
+    summary::-webkit-details-marker { display: none; }
+
+    summary::after {
+      content: "▼";
+      font-size: 10px;
+      color: var(--muted);
+      transition: transform 0.16s;
+    }
+
+    details[open] summary::after { transform: rotate(180deg); }
+
+    .wish-list {
+      display: grid;
+      gap: 10px;
+      padding: 0 14px 14px;
+    }
+
+    .wish-item {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      background: #fff;
+    }
+
+    .wish-title {
+      margin-bottom: 6px;
+      font-weight: 900;
+    }
+
+    .wish-url {
+      font-size: 13px;
+      word-break: break-all;
+    }
+
+    .wish-editor {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .wish-editor-item {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 13px;
+      background: #fff;
+    }
+
+    .loading-line {
+      height: 12px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #eceff4, #fff8d9, #eceff4);
+      background-size: 200% 100%;
+      animation: loading 1.2s infinite linear;
+    }
+
+    @keyframes loading {
+      from { background-position: 200% 0; }
+      to { background-position: -200% 0; }
+    }
+
+    @media (max-width: 980px) {
+      .app { width: min(100% - 20px, 1280px); padding-top: 12px; }
+      .topbar, .brand, .topbar-actions { align-items: flex-start; }
+      .topbar, .layout, .birthday-head { grid-template-columns: 1fr; }
+      .topbar { flex-direction: column; }
+      .layout { display: grid; }
+      .stats { grid-template-columns: 1fr; }
+      .logo { width: 46px; height: 46px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">1C</div>
+        <div>
+          <h1>HappyDAY</h1>
+          <p>Дни рождения, ответственные и хотелки сотрудников</p>
+        </div>
+      </div>
+
+      <div class="topbar-actions" id="topbarActions"></div>
+    </header>
+
+    <div id="appRoot">
+      <section class="panel">
+        <h2 class="panel-title">Загрузка</h2>
+        <div class="loading-line"></div>
+      </section>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
+    import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js';
+    import {
+      getFirestore,
+      collection,
+      doc,
+      getDoc,
+      setDoc,
+      updateDoc,
+      onSnapshot,
+      serverTimestamp
+    } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js';
+
+    const firebaseConfig = {
+      apiKey: 'AIzaSyAjOUOm54OVMzjFQf8TJits-MFjxg2YHjg',
+      authDomain: 'happyday-5639d.firebaseapp.com',
+      projectId: 'happyday-5639d',
+      storageBucket: 'happyday-5639d.firebasestorage.app',
+      messagingSenderId: '417376191803',
+      appId: '1:417376191803:web:807279d990e057b49d231e'
+    };
+
+    const SESSION_KEY = 'happyday_employee_id';
+
+    const state = {
+      appReady: false,
+      db: null,
+      auth: null,
+      employees: [],
+      currentUserId: localStorage.getItem(SESSION_KEY) || '',
+      editableWishes: [],
+      message: { text: '', type: 'info' },
+      unsubscribeEmployees: null
+    };
+
+    const root = document.getElementById('appRoot');
+    const topbarActions = document.getElementById('topbarActions');
+
+    init();
+
+    async function init() {
+      try {
+        const app = initializeApp(firebaseConfig);
+        state.auth = getAuth(app);
+        state.db = getFirestore(app);
+
+        await signInAnonymously(state.auth);
+
+        state.unsubscribeEmployees = onSnapshot(collection(state.db, 'employees'), snapshot => {
+          state.employees = snapshot.docs.map(item => ({ id: item.id, ...item.data() }));
+
+          if (state.currentUserId && !state.employees.some(employee => employee.id === state.currentUserId)) {
+            state.currentUserId = '';
+            localStorage.removeItem(SESSION_KEY);
+          }
+
+          syncEditableWishes();
+          state.appReady = true;
+          render();
+        }, error => {
+          console.error(error);
+          state.appReady = true;
+          showMessage('Нет доступа к Firestore. Проверь правила безопасности.', 'error');
+        });
+      } catch (error) {
+        console.error(error);
+        state.appReady = true;
+        showMessage('Ошибка подключения Firebase. Проверь Anonymous Auth.', 'error');
+      }
+    }
+
+    function render() {
+      renderTopbar();
+
+      if (!state.appReady) {
+        root.innerHTML = `
+          <section class="panel">
+            <h2 class="panel-title">Подключение к Firebase</h2>
+            <div class="loading-line"></div>
+          </section>
+        `;
+        return;
+      }
+
+      root.innerHTML = `
+        <div class="layout">
+          <aside>${renderSidebar()}</aside>
+          <main class="dashboard">${renderDashboard()}</main>
+        </div>
+      `;
+
+      bindEvents();
+    }
+
+    function renderTopbar() {
+      const user = getCurrentUser();
+
+      if (!user) {
+        topbarActions.innerHTML = '';
+        return;
+      }
+
+      const responsibilities = getMyResponsibilities();
+
+      topbarActions.innerHTML = `
+        <span class="pill">${escapeHtml(user.name)}</span>
+        ${responsibilities.length ? `<span class="pill attention">Ответственный: ${responsibilities.length}</span>` : ''}
+        <button class="btn btn-secondary" id="logoutBtn">Выйти</button>
+      `;
+
+      document.getElementById('logoutBtn')?.addEventListener('click', logoutProfile);
+    }
+
+    function renderSidebar() {
+      const user = getCurrentUser();
+
+      if (!user) {
+        return `
+          <section class="panel">
+            <h2 class="panel-title">Вход</h2>
+
+            <div class="field">
+              <label>Имя на русском</label>
+              <input id="loginName" type="text" placeholder="Например: Иван" autocomplete="name" />
+            </div>
+
+            <div class="field">
+              <label>Дата рождения</label>
+              <input id="loginBirthDate" type="text" inputmode="numeric" maxlength="5" placeholder="05.06" autocomplete="off" />
+            </div>
+
+            <button class="btn btn-primary" style="width:100%" id="loginBtn">Войти / создать пользователя</button>
+
+            <div class="hint">Первый вход создаёт пользователя. Повторный вход выполняется по той же паре: имя + дата рождения.</div>
+            ${renderMessage()}
+          </section>
+        `;
+      }
+
+      const responsibilities = getMyResponsibilities();
+
+      return `
+        <section class="panel profile-card">
+          <h2 class="panel-title">Личный кабинет</h2>
+          <h3 class="profile-name">${escapeHtml(user.name)}</h3>
+          <p class="profile-date">Дата рождения: ${escapeHtml(user.birthDate)}</p>
+
+          ${responsibilities.length ? `
+            <div class="responsibility-list">
+              ${responsibilities.map(item => `
+                <div class="responsibility-item">Вы ответственный за ${escapeHtml(item.name)} — ${escapeHtml(item.birthDate)}</div>
+              `).join('')}
+            </div>
+          ` : `<div class="empty" style="margin-top:14px">Сейчас вы не ответственный по ближайшим дням рождения.</div>`}
+        </section>
+
+        <section class="panel">
+          <h2 class="panel-title">Мои хотелки</h2>
+          <p class="muted small">Можно добавить максимум 3 позиции. Название обязательно, ссылка необязательна.</p>
+
+          ${state.editableWishes.length ? `
+            <div class="wish-editor">
+              ${state.editableWishes.map((wish, index) => `
+                <article class="wish-editor-item">
+                  <div class="field">
+                    <label>Подарок ${index + 1}</label>
+                    <input class="wish-title-input" data-index="${index}" type="text" maxlength="120" value="${escapeAttribute(wish.title)}" placeholder="Например: сертификат, книга, аксессуар" />
+                  </div>
+
+                  <div class="field">
+                    <label>Ссылка</label>
+                    <input class="wish-url-input" data-index="${index}" type="text" maxlength="500" value="${escapeAttribute(wish.url)}" placeholder="https://..." />
+                  </div>
+
+                  <button class="btn btn-ghost remove-wish-btn" data-index="${index}">Удалить позицию</button>
+                </article>
+              `).join('')}
+            </div>
+          ` : `<div class="empty" style="margin-top:12px">Пока хотелок нет. Нажмите “+ Добавить”.</div>`}
+
+          <div class="btn-row" style="margin-top:14px">
+            <button class="btn btn-primary" id="addWishBtn" ${state.editableWishes.length >= 3 ? 'disabled' : ''}>+ Добавить</button>
+            <button class="btn btn-attention" id="saveWishesBtn">Сохранить</button>
+          </div>
+
+          ${renderMessage()}
+        </section>
+      `;
+    }
+
+    function renderDashboard() {
+      const birthdays = getUpcomingBirthdays();
+      const responsibilities = getMyResponsibilities();
+
+      return `
+        <section class="panel hero">
+          <h2>Кто следующий?</h2>
+          <p>Показываем ближайший день рождения. Если в ближайшие 7 дней несколько дней рождения — показываем всех.</p>
+
+          <div class="stats">
+            <div class="stat"><strong>${state.employees.length}</strong><span class="muted small">пользователей</span></div>
+            <div class="stat"><strong>${birthdays.length}</strong><span class="muted small">событий в показе</span></div>
+            <div class="stat"><strong>${responsibilities.length}</strong><span class="muted small">моих ответственностей</span></div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2 class="panel-title">Ближайшие дни рождения</h2>
+
+          ${!state.employees.length ? `<div class="empty">Пока в базе нет пользователей. Первый вход создаст первого пользователя.</div>` : `
+            <div class="birthday-list">
+              ${birthdays.map(item => renderBirthdayCard(item)).join('')}
+            </div>
+          `}
+        </section>
+      `;
+    }
+
+    function renderBirthdayCard(item) {
+      const user = getCurrentUser();
+      const responsible = getResponsibleFor(item);
+      const isMyResponsibility = user && responsible && responsible.id === user.id;
+      const wishes = Array.isArray(item.wishes) ? item.wishes : [];
+
+      return `
+        <article class="birthday-card">
+          <div class="birthday-head">
+            <div>
+              <h3 class="birthday-name">${escapeHtml(item.name)}</h3>
+              <div class="birthday-meta">
+                <span>Дата: <b>${escapeHtml(item.birthDate)}</b></span>
+                <span>Через: <b>${item.daysUntil}</b> дн.</span>
+                <span>Ответственный: <b>${responsible ? escapeHtml(responsible.name) : '—'}</b></span>
+              </div>
+            </div>
+
+            <div class="btn-row">
+              ${item.daysUntil <= 7 ? `<span class="tag">Окно 7 дней</span>` : ''}
+              ${isMyResponsibility ? `<span class="tag attention">Вы ответственный</span>` : ''}
+            </div>
+          </div>
+
+          <details>
+            <summary>Открыть список подарков</summary>
+            ${wishes.length ? `
+              <div class="wish-list">
+                ${wishes.map((wish, index) => `
+                  <div class="wish-item">
+                    <div class="wish-title">${index + 1}. ${escapeHtml(wish.title)}</div>
+                    ${wish.url ? `<div class="wish-url"><a href="${escapeAttribute(normalizeUrl(wish.url))}" target="_blank" rel="noopener noreferrer">${escapeHtml(wish.url)}</a></div>` : ''}
+                  </div>
+                `).join('')}
+              </div>
+            ` : `
+              <div class="wish-list">
+                <div class="empty">Подарки пока не указаны.</div>
+              </div>
+            `}
+          </details>
+        </article>
+      `;
+    }
+
+    function bindEvents() {
+      document.getElementById('loginBirthDate')?.addEventListener('input', event => {
+        event.target.value = formatBirthInput(event.target.value);
+      });
+
+      document.getElementById('loginBirthDate')?.addEventListener('keydown', event => {
+        if (event.key === 'Enter') loginOrRegister();
+      });
+
+      document.getElementById('loginName')?.addEventListener('keydown', event => {
+        if (event.key === 'Enter') loginOrRegister();
+      });
+
+      document.getElementById('loginBtn')?.addEventListener('click', loginOrRegister);
+      document.getElementById('addWishBtn')?.addEventListener('click', addWish);
+      document.getElementById('saveWishesBtn')?.addEventListener('click', saveWishes);
+
+      document.querySelectorAll('.wish-title-input').forEach(input => {
+        input.addEventListener('input', event => {
+          const index = Number(event.target.dataset.index);
+          state.editableWishes[index].title = event.target.value;
+        });
+      });
+
+      document.querySelectorAll('.wish-url-input').forEach(input => {
+        input.addEventListener('input', event => {
+          const index = Number(event.target.dataset.index);
+          state.editableWishes[index].url = event.target.value;
+        });
+      });
+
+      document.querySelectorAll('.remove-wish-btn').forEach(button => {
+        button.addEventListener('click', event => {
+          const index = Number(event.target.dataset.index);
+          removeWish(index);
+        });
+      });
+    }
+
+    function renderMessage() {
+      if (!state.message.text) return '';
+      return `<div class="message ${state.message.type}">${escapeHtml(state.message.text)}</div>`;
+    }
+
+    function showMessage(text, type = 'info') {
+      state.message = { text, type };
+      render();
+
+      clearTimeout(state.messageTimer);
+      state.messageTimer = setTimeout(() => {
+        state.message.text = '';
+        render();
+      }, 4200);
+    }
+
+    async function loginOrRegister() {
+      const nameInput = document.getElementById('loginName');
+      const birthInput = document.getElementById('loginBirthDate');
+
+      const name = String(nameInput?.value || '').trim().replace(/\s+/g, ' ');
+      const birthDate = String(birthInput?.value || '').trim();
+
+      if (!name) {
+        showMessage('Введите имя.', 'error');
+        return;
+      }
+
+      if (!isValidBirthDateShort(birthDate)) {
+        showMessage('Дата рождения должна быть в формате 05.06.', 'error');
+        return;
+      }
+
+      try {
+        const employeeId = makeEmployeeId(name, birthDate);
+        const ref = doc(state.db, 'employees', employeeId);
+        const snapshot = await getDoc(ref);
+
+        if (!snapshot.exists()) {
+          await setDoc(ref, {
+            name,
+            nameLower: normalizeName(name),
+            birthDate,
+            wishes: [],
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp()
+          });
+        }
+
+        state.currentUserId = employeeId;
+        localStorage.setItem(SESSION_KEY, employeeId);
+        syncEditableWishes();
+        showMessage(snapshot.exists() ? 'Вход выполнен.' : 'Пользователь создан.', 'ok');
+      } catch (error) {
+        console.error(error);
+        showMessage('Ошибка входа. Проверь Firestore Rules.', 'error');
+      }
+    }
+
+    function logoutProfile() {
+      state.currentUserId = '';
+      state.editableWishes = [];
+      localStorage.removeItem(SESSION_KEY);
+      showMessage('Вы вышли из личного кабинета.', 'info');
+    }
+
+    function addWish() {
+      if (state.editableWishes.length >= 3) return;
+      state.editableWishes.push({ title: '', url: '' });
+      render();
+    }
+
+    function removeWish(index) {
+      state.editableWishes.splice(index, 1);
+      render();
+    }
+
+    async function saveWishes() {
+      const user = getCurrentUser();
+
+      if (!user) {
+        showMessage('Сначала войдите в личный кабинет.', 'error');
+        return;
+      }
+
+      const wishes = state.editableWishes
+        .map(wish => ({
+          title: String(wish.title || '').trim(),
+          url: String(wish.url || '').trim()
+        }))
+        .filter(wish => wish.title)
+        .slice(0, 3);
+
+      try {
+        await updateDoc(doc(state.db, 'employees', user.id), {
+          wishes,
+          updatedAt: serverTimestamp()
+        });
+        showMessage('Хотелки сохранены.', 'ok');
+      } catch (error) {
+        console.error(error);
+        showMessage('Не удалось сохранить хотелки.', 'error');
+      }
+    }
+
+    function syncEditableWishes() {
+      const user = getCurrentUser();
+      state.editableWishes = user && Array.isArray(user.wishes)
+        ? user.wishes.map(wish => ({ title: wish.title || '', url: wish.url || '' })).slice(0, 3)
+        : [];
+    }
+
+    function getCurrentUser() {
+      return state.employees.find(employee => employee.id === state.currentUserId) || null;
+    }
+
+    function getUpcomingBirthdays() {
+      if (!state.employees.length) return [];
+
+      const list = state.employees
+        .map(employee => {
+          const nextDate = getNextBirthdayDate(employee.birthDate);
+          return {
+            ...employee,
+            nextDate,
+            daysUntil: daysUntil(nextDate)
+          };
+        })
+        .sort((a, b) => a.nextDate - b.nextDate || a.name.localeCompare(b.name, 'ru'));
+
+      const within7Days = list.filter(employee => employee.daysUntil >= 0 && employee.daysUntil <= 7);
+      return within7Days.length ? within7Days : list.slice(0, 1);
+    }
+
+    function getMyResponsibilities() {
+      const user = getCurrentUser();
+      if (!user) return [];
+
+      return getUpcomingBirthdays().filter(employee => {
+        const responsible = getResponsibleFor(employee);
+        return responsible && responsible.id === user.id;
+      });
+    }
+
+    function getResponsibleFor(targetEmployee) {
+      if (!targetEmployee || state.employees.length < 2) return null;
+
+      const sorted = [...state.employees].sort((a, b) => {
+        const aKey = birthSortKey(a.birthDate);
+        const bKey = birthSortKey(b.birthDate);
+        return aKey.localeCompare(bKey) || a.name.localeCompare(b.name, 'ru');
+      });
+
+      const index = sorted.findIndex(employee => employee.id === targetEmployee.id);
+      if (index === -1) return null;
+
+      const previousIndex = index === 0 ? sorted.length - 1 : index - 1;
+      return sorted[previousIndex] || null;
+    }
+
+    function formatBirthInput(value) {
+      let digits = String(value || '').replace(/\D/g, '').slice(0, 4);
+      if (digits.length >= 3) digits = digits.slice(0, 2) + '.' + digits.slice(2);
+      return digits;
+    }
+
+    function normalizeName(name) {
+      return String(name || '').trim().replace(/\s+/g, ' ').toLowerCase();
+    }
+
+    function normalizeUrl(url) {
+      const value = String(url || '').trim();
+      if (!value) return '';
+      return /^https?:\/\//i.test(value) ? value : 'https://' + value;
+    }
+
+    function makeEmployeeId(name, birthDate) {
+      const source = `${normalizeName(name)}|${birthDate}`;
+      const encoded = encodeURIComponent(source)
+        .replace(/%/g, '_')
+        .replace(/[^a-zA-Z0-9_-]/g, '_');
+      return `employee_${encoded}`.slice(0, 900);
+    }
+
+    function isValidBirthDateShort(value) {
+      if (!/^\d{2}\.\d{2}$/.test(value)) return false;
+      const [day, month] = value.split('.').map(Number);
+      const date = new Date(2024, month - 1, day);
+      return date.getFullYear() === 2024 && date.getMonth() === month - 1 && date.getDate() === day;
+    }
+
+    function parseBirthDate(shortDate) {
+      const [day, month] = String(shortDate).split('.').map(Number);
+      return { day, month };
+    }
+
+    function getNextBirthdayDate(shortDate) {
+      const { day, month } = parseBirthDate(shortDate);
+      const today = new Date();
+      const currentDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      let result = new Date(today.getFullYear(), month - 1, day);
+
+      if (result < currentDay) {
+        result = new Date(today.getFullYear() + 1, month - 1, day);
+      }
+
+      return result;
+    }
+
+    function daysUntil(date) {
+      const today = new Date();
+      const currentDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      const targetDay = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      return Math.round((targetDay - currentDay) / 86400000);
+    }
+
+    function birthSortKey(shortDate) {
+      const { day, month } = parseBirthDate(shortDate);
+      return `${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function escapeAttribute(value) {
+      return escapeHtml(value).replaceAll('`', '&#096;');
+    }
+  </script>
+</body>
+</html>
