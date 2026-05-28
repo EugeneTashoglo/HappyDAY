@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -21,7 +22,9 @@
       --radius-xl: 24px;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
@@ -34,9 +37,20 @@
         var(--bg);
     }
 
-    button, input, textarea { font: inherit; }
-    a { color: var(--attention); text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    a {
+      color: var(--attention);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
 
     .app {
       width: min(1280px, calc(100% - 32px));
@@ -133,7 +147,9 @@
       padding: 20px;
     }
 
-    .panel + .panel { margin-top: 20px; }
+    .panel+.panel {
+      margin-top: 20px;
+    }
 
     .panel-title {
       margin: 0 0 15px;
@@ -141,10 +157,17 @@
       letter-spacing: -0.02em;
     }
 
-    .muted { color: var(--muted); }
-    .small { font-size: 13px; }
+    .muted {
+      color: var(--muted);
+    }
 
-    .field { margin-bottom: 13px; }
+    .small {
+      font-size: 13px;
+    }
+
+    .field {
+      margin-bottom: 13px;
+    }
 
     .field label {
       display: block;
@@ -197,9 +220,23 @@
       line-height: 1.35;
     }
 
-    .message.info { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
-    .message.ok { background: #ecfdf3; border: 1px solid #b7ebc8; color: #116530; }
-    .message.error { background: var(--attention-soft); border: 1px solid #f3b8bd; color: var(--attention); }
+    .message.info {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      color: #92400e;
+    }
+
+    .message.ok {
+      background: #ecfdf3;
+      border: 1px solid #b7ebc8;
+      color: #116530;
+    }
+
+    .message.error {
+      background: var(--attention-soft);
+      border: 1px solid #f3b8bd;
+      color: var(--attention);
+    }
 
     .btn-row {
       display: flex;
@@ -218,8 +255,15 @@
       transition: 0.14s transform, 0.14s box-shadow, 0.14s background;
     }
 
-    .btn:hover { transform: translateY(-1px); }
-    .btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+    }
 
     .btn-primary {
       background: var(--onec-yellow);
@@ -228,7 +272,9 @@
       box-shadow: 0 8px 18px rgba(255, 210, 0, 0.24);
     }
 
-    .btn-primary:hover { background: var(--onec-yellow-dark); }
+    .btn-primary:hover {
+      background: var(--onec-yellow-dark);
+    }
 
     .btn-secondary {
       background: #f3f4f6;
@@ -268,7 +314,10 @@
       letter-spacing: -0.04em;
     }
 
-    .hero p { margin: 0; color: #4b5563; }
+    .hero p {
+      margin: 0;
+      color: #4b5563;
+    }
 
     .stats {
       display: grid;
@@ -302,7 +351,10 @@
       letter-spacing: -0.03em;
     }
 
-    .profile-date { margin: 0; color: var(--muted); }
+    .profile-date {
+      margin: 0;
+      color: var(--muted);
+    }
 
     .responsibility-list {
       display: grid;
@@ -409,7 +461,9 @@
       user-select: none;
     }
 
-    summary::-webkit-details-marker { display: none; }
+    summary::-webkit-details-marker {
+      display: none;
+    }
 
     summary::after {
       content: "▼";
@@ -418,7 +472,9 @@
       transition: transform 0.16s;
     }
 
-    details[open] summary::after { transform: rotate(180deg); }
+    details[open] summary::after {
+      transform: rotate(180deg);
+    }
 
     .wish-list {
       display: grid;
@@ -465,21 +521,89 @@
     }
 
     @keyframes loading {
-      from { background-position: 200% 0; }
-      to { background-position: -200% 0; }
+      from {
+        background-position: 200% 0;
+      }
+
+      to {
+        background-position: -200% 0;
+      }
+    }
+
+    .employee-directory {
+      display: grid;
+      gap: 10px;
+    }
+
+    .employee-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+    }
+
+    .employee-row.current {
+      border-color: #ead36b;
+      background: #fffbea;
+    }
+
+    .employee-row-name {
+      font-weight: 900;
+    }
+
+    .employee-row-date {
+      font-size: 13px;
+      font-weight: 900;
+      color: #6b5200;
+      background: #fff8d9;
+      border: 1px solid #ead36b;
+      border-radius: 999px;
+      padding: 6px 10px;
+      white-space: nowrap;
     }
 
     @media (max-width: 980px) {
-      .app { width: min(100% - 20px, 1280px); padding-top: 12px; }
-      .topbar, .brand, .topbar-actions { align-items: flex-start; }
-      .topbar, .layout, .birthday-head { grid-template-columns: 1fr; }
-      .topbar { flex-direction: column; }
-      .layout { display: grid; }
-      .stats { grid-template-columns: 1fr; }
-      .logo { width: 46px; height: 46px; }
+      .app {
+        width: min(100% - 20px, 1280px);
+        padding-top: 12px;
+      }
+
+      .topbar,
+      .brand,
+      .topbar-actions {
+        align-items: flex-start;
+      }
+
+      .topbar,
+      .layout,
+      .birthday-head {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        flex-direction: column;
+      }
+
+      .layout {
+        display: grid;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .logo {
+        width: 46px;
+        height: 46px;
+      }
     }
   </style>
 </head>
+
 <body>
   <div class="app">
     <header class="topbar">
@@ -698,29 +822,64 @@
       const responsibilities = getMyResponsibilities();
 
       return `
-        <section class="panel hero">
-          <h2>Кто следующий?</h2>
-          <p>Показываем ближайший день рождения. Если в ближайшие 7 дней несколько дней рождения — показываем всех.</p>
+    <section class="panel hero">
+      <h2>Кто следующий?</h2>
+      <p>Показываем ближайший день рождения. Если в ближайшие 7 дней несколько дней рождения — показываем всех.</p>
 
-          <div class="stats">
-            <div class="stat"><strong>${state.employees.length}</strong><span class="muted small">пользователей</span></div>
-            <div class="stat"><strong>${birthdays.length}</strong><span class="muted small">событий в показе</span></div>
-            <div class="stat"><strong>${responsibilities.length}</strong><span class="muted small">моих ответственностей</span></div>
-          </div>
-        </section>
+      <div class="stats">
+        <div class="stat"><strong>${state.employees.length}</strong><span class="muted small">пользователей</span></div>
+        <div class="stat"><strong>${birthdays.length}</strong><span class="muted small">событий в показе</span></div>
+        <div class="stat"><strong>${responsibilities.length}</strong><span class="muted small">моих ответственностей</span></div>
+      </div>
+    </section>
 
-        <section class="panel">
-          <h2 class="panel-title">Ближайшие дни рождения</h2>
+    <section class="panel">
+      <h2 class="panel-title">Ближайшие дни рождения</h2>
 
-          ${!state.employees.length ? `<div class="empty">Пока в базе нет пользователей. Первый вход создаст первого пользователя.</div>` : `
-            <div class="birthday-list">
-              ${birthdays.map(item => renderBirthdayCard(item)).join('')}
+      ${!state.employees.length ? `<div class="empty">Пока в базе нет пользователей. Первый вход создаст первого пользователя.</div>` : `
+        <div class="birthday-list">
+          ${birthdays.map(item => renderBirthdayCard(item)).join('')}
+        </div>
+      `}
+    </section>
+
+    ${renderEmployeesDirectory()}
+  `;
+    }
+    function renderEmployeesDirectory() {
+      const employees = getEmployeesSortedByBirthday();
+      const currentUser = getCurrentUser();
+
+      return `
+    <section class="panel">
+      <h2 class="panel-title">Все сотрудники</h2>
+
+      ${!employees.length ? `
+        <div class="empty">Сотрудников пока нет.</div>
+      ` : `
+        <div class="employee-directory">
+          ${employees.map(employee => `
+            <div class="employee-row ${currentUser && currentUser.id === employee.id ? 'current' : ''}">
+              <div>
+                <div class="employee-row-name">${escapeHtml(employee.name)}</div>
+                <div class="muted small">${currentUser && currentUser.id === employee.id ? 'Это вы' : 'Сотрудник'}</div>
+              </div>
+              <div class="employee-row-date">${escapeHtml(employee.birthDate)}</div>
             </div>
-          `}
-        </section>
-      `;
+          `).join('')}
+        </div>
+      `}
+    </section>
+  `;
     }
 
+    function getEmployeesSortedByBirthday() {
+      return [...state.employees].sort((a, b) => {
+        const aKey = birthSortKey(a.birthDate);
+        const bKey = birthSortKey(b.birthDate);
+        return aKey.localeCompare(bKey) || a.name.localeCompare(b.name, 'ru');
+      });
+    }
     function renderBirthdayCard(item) {
       const user = getCurrentUser();
       const responsible = getResponsibleFor(item);
@@ -1040,4 +1199,5 @@
     }
   </script>
 </body>
+
 </html>
