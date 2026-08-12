@@ -650,6 +650,7 @@
     };
 
     const SESSION_KEY = 'happyday_employee_id';
+    const RESPONSIBLE_NAME = 'Алёна';
 
     const state = {
       appReady: false,
@@ -858,10 +859,10 @@
         <div class="empty">Сотрудников пока нет.</div>
       ` : `
         <div class="employee-directory">
-          ${employees.map(employee => `
+          ${employees.map((employee, index) => `
             <div class="employee-row ${currentUser && currentUser.id === employee.id ? 'current' : ''}">
               <div>
-                <div class="employee-row-name">${escapeHtml(employee.name)}</div>
+                <div class="employee-row-name">${index + 1}. ${escapeHtml(employee.name)}</div>
                 <div class="muted small">${currentUser && currentUser.id === employee.id ? 'Это вы' : 'Сотрудник'}</div>
               </div>
               <div class="employee-row-date">${escapeHtml(employee.birthDate)}</div>
@@ -1109,19 +1110,12 @@
     }
 
     function getResponsibleFor(targetEmployee) {
-      if (!targetEmployee || state.employees.length < 2) return null;
+      if (!targetEmployee) return null;
 
-      const sorted = [...state.employees].sort((a, b) => {
-        const aKey = birthSortKey(a.birthDate);
-        const bKey = birthSortKey(b.birthDate);
-        return aKey.localeCompare(bKey) || a.name.localeCompare(b.name, 'ru');
-      });
-
-      const index = sorted.findIndex(employee => employee.id === targetEmployee.id);
-      if (index === -1) return null;
-
-      const previousIndex = index === 0 ? sorted.length - 1 : index - 1;
-      return sorted[previousIndex] || null;
+      return state.employees.find(employee => normalizeName(employee.name) === normalizeName(RESPONSIBLE_NAME)) || {
+        id: 'fixed-responsible',
+        name: RESPONSIBLE_NAME
+      };
     }
 
     function formatBirthInput(value) {
